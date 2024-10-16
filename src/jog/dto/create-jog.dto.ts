@@ -14,10 +14,6 @@ class Location{
 export class CreateJogDto{
     @IsNotEmpty()
     @IsNumber()
-    readonly userId: number;
-
-    @IsNotEmpty()
-    @IsNumber()
     readonly time: number;
 
     @IsNotEmpty()

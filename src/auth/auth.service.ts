@@ -15,10 +15,15 @@ export class AuthService {
         private jwtService: JwtService
     ) {}
 
-    async signup(signupDto: SignupDto): Promise<{token: string}> {
+    async signup(signupDto: SignupDto): Promise<{user: User , token: string}> {
         const { name, email, password } = signupDto;
 
         const hashedPassword = await bcrypt.hash(password, 10);
+
+        const emailExists = await this.userModel.findOne({email});
+        if(emailExists){
+            throw new UnauthorizedException('Email already exists');
+        }
 
         const user = await this.userModel.create({
             name,
@@ -26,11 +31,13 @@ export class AuthService {
             password: hashedPassword
         });
 
+
+
         const token = this.jwtService.sign({ id: user._id });
-        return {token};
+        return { user, token};
     }
 
-    async login(loginDto: LoginDto): Promise<{token: string}> {
+    async login(loginDto: LoginDto): Promise<{user:User, token: string}> {
         const { email, password } = loginDto;
 
         const user = await this.userModel.findOne({ email });
@@ -46,6 +53,6 @@ export class AuthService {
         }
 
         const token = this.jwtService.sign({ id: user._id });
-        return {token};
+        return {user, token};
     }
 }

@@ -13,7 +13,6 @@ export class JogService {
     ) {}
 
     async findAll(query: Query): Promise<Jog[]> {
-
         const resultsPerPage = 2;
         const currentPage = Number(query.page) || 1;
         const skip = resultsPerPage * (currentPage - 1);
@@ -28,16 +27,11 @@ export class JogService {
     }
 
     async findById(id: string): Promise<Jog> {
-        const isValidId = mongoose.isValidObjectId(id);
 
         const jog = await this.jogModel.findById(id);
 
         if(!jog) {
             throw new NotFoundException('Jog not found.');
-        }
-
-        if(!isValidId) {
-            throw new BadRequestException('Please enter a valid id.');
         }
 
         return jog;

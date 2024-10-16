@@ -7,9 +7,6 @@ import {Prop, Schema, SchemaFactory} from "@nestjs/mongoose";
 
 export class Jog {
     @Prop()
-    userId: number;
-
-    @Prop()
     time: number;
 
     @Prop()
