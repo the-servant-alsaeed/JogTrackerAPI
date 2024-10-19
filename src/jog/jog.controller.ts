@@ -5,13 +5,17 @@ import {CreateJogDto} from "./dto/create-jog.dto";
 import {UpdateJogDto} from "./dto/update-jog.dto";
 import {Query as ExpressQuery} from 'express-serve-static-core';
 import {AuthGuard} from "@nestjs/passport";
+import { Role } from 'src/auth/enums/role.enum';
+import { Roles } from 'src/auth/decorators/roles.decorators';
+import { RolesGuard } from 'src/auth/guards/roles.guards';
 
 @Controller('jogs')
 export class JogController {
     constructor(private jogService: JogService) {}
 
     @Get()
-    @UseGuards(AuthGuard())
+    @Roles(Role.Manager, Role.Admin)
+    @UseGuards(AuthGuard(), RolesGuard)
     async getAllJogs(@Query() query: ExpressQuery): Promise<Jog[]> {
         return this.jogService.findAll(query);
     }
