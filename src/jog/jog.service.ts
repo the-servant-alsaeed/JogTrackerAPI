@@ -3,6 +3,7 @@ import {InjectModel} from "@nestjs/mongoose";
 import * as mongoose from "mongoose";
 import {Jog} from "./schemas/jog.schema";
 import {Query} from 'express-serve-static-core';
+import { User } from 'src/auth/schemas/user.schema';
 
 
 @Injectable()
@@ -21,7 +22,10 @@ export class JogService {
         return jogs;
     }
 
-    async create(jog: Jog): Promise<Jog> {
+    async create(jog: Jog, user: User): Promise<Jog> {
+        
+        const data = Object.assign(jog,{ user: user._id})
+
         const response = await this.jogModel.create(jog);
         return response;
     }

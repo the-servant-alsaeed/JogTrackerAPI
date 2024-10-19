@@ -1,5 +1,6 @@
-import {IsDate, IsNumber, IsObject, IsOptional} from "class-validator";
+import {IsDate, IsEmpty, IsNumber, IsObject, IsOptional} from "class-validator";
 import {Type} from "class-transformer";
+import {User} from "../../auth/schemas/user.schema";
 
 class Location{
     @IsOptional()
@@ -32,4 +33,7 @@ export class UpdateJogDto{
     @IsObject()
     @Type(() => Location)
     readonly location: Location;
+
+    @IsEmpty({message: 'User is not allowed to be set'})
+    readonly user: User;
 }

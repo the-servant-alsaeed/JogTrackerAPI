@@ -1,4 +1,6 @@
 import {Prop, Schema, SchemaFactory} from "@nestjs/mongoose";
+import {User} from "../../auth/schemas/user.schema";
+import * as mongoose from "mongoose";
 
 
 @Schema({
@@ -20,6 +22,9 @@ export class Jog {
         lat: number;
         lon: number;
     }
+
+    @Prop({type: mongoose.Schema.Types.ObjectId, ref: 'User'})
+    user: User;
 }
 
 export const JogSchema = SchemaFactory.createForClass(Jog);
